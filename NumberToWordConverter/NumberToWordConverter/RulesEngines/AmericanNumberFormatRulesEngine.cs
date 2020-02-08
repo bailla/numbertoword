@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace NumberToWordConverter.RulesEngines
 {
@@ -15,20 +12,13 @@ namespace NumberToWordConverter.RulesEngines
 
         private string Process(long item)
         {
-            if (item <= 19)
-                return ProcessRootNumber(item);
-            else if (item >= 20 && item <= 99)
-                return ProcessTees(item);
-            else if (item >= 100 && item <= 999)
-                return ProcessHundreds(item);
-            else if (item >= 1000 && item <= 999999)
-                return ProcessThousands(item);
-            else if (item >= 1000000 && item <= 999999999)
-                return ProcessMillions(item);
-            else if (item >= 1000000000 && item <= 999999999999)
-                return ProcessBillions(item);
-
-            return "";
+            return item.IsRootNumber() ? ProcessRootNumber(item) :
+                item.IsTeesNumber() ? ProcessTees(item) :
+                item.IsHundredsNumber() ? ProcessHundreds(item) :
+                item.IsThousandsNumber() ? ProcessThousands(item) :
+                item.IsMillionsNumber() ? ProcessMillions(item) :
+                item.IsBillionsNumber() ? ProcessBillions(item) : 
+                $"Unhandled: {item}";
         }
 
         private string ProcessRootNumber(long item)
@@ -84,9 +74,7 @@ namespace NumberToWordConverter.RulesEngines
         {
             StringBuilder teeNumber = new StringBuilder();
 
-            long firstDigit = long.Parse(item.ToString()[0].ToString());
-            // two digit numbers > 19
-            switch (firstDigit)
+            switch (item.FirstDigit())
             {
                 case 2:
                     teeNumber.Append("twenty");
@@ -116,21 +104,17 @@ namespace NumberToWordConverter.RulesEngines
                     throw new Exception($"number {item} not handled in ProcessTees");
             }
 
-            long secondDigit = long.Parse(item.ToString()[1].ToString());
-
-            if (secondDigit == 0)
+            if (item.SecondDigit() == 0)
                 return teeNumber.ToString();
 
-            return teeNumber.Append("-" + Process(secondDigit)).ToString();
+            return teeNumber.Append("-" + Process(item.SecondDigit())).ToString();
         }
 
         private string ProcessHundreds(long item)
         {
             StringBuilder hundredNumber = new StringBuilder();
 
-            long firstDigit = long.Parse(item.ToString()[0].ToString());
-
-            hundredNumber.Append(Process(firstDigit) + " hundred");
+            hundredNumber.Append(Process(item.FirstDigit()) + " hundred");
 
             long remainingDigits = long.Parse(item.ToString().Substring(1, 2).ToString());
 
@@ -192,6 +176,67 @@ namespace NumberToWordConverter.RulesEngines
                 return billionNumber.ToString();
 
             return billionNumber.Append(", " + Process(millions)).ToString();
+        }
+    }
+
+    public static class ExtensionMethods
+    {
+        public static bool IsRootNumber(this long value)
+        {
+            if (value <= 19)
+                return true;
+
+            return false;
+        }
+
+        public static bool IsTeesNumber(this long value)
+        {
+            if (value >= 20 && value <= 99)
+                return true;
+
+            return false;
+        }
+
+        public static bool IsHundredsNumber(this long value)
+        {
+            if (value >= 100 && value <= 999)
+                return true;
+
+            return false;
+        }
+
+        public static bool IsThousandsNumber(this long value)
+        {
+            if (value >= 1000 && value <= 999999)
+                return true;
+
+            return false;
+        }
+
+        public static bool IsMillionsNumber(this long value)
+        {
+            if (value >= 1000000 && value <= 999999999)
+                return true;
+
+            return false;
+        }
+
+        public static bool IsBillionsNumber(this long value)
+        {
+            if (value >= 1000000000 && value <= 999999999999)
+                return true;
+
+            return false;
+        }
+
+        public static long FirstDigit(this long value)
+        {
+            return long.Parse(value.ToString()[0].ToString());
+        }
+
+        public static long SecondDigit(this long value)
+        {
+            return long.Parse(value.ToString()[1].ToString());
         }
     }
 }
