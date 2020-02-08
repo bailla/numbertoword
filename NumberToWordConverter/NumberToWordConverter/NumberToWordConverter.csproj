@@ -54,6 +54,7 @@
     <Compile Include="Inputters\FileInputter.cs" />
     <Compile Include="Inputters\IInputter.cs" />
     <Compile Include="Outputters\IOutputter.cs" />
+    <Compile Include="Outputters\StdOutStringOutputter.cs" />
     <Compile Include="Parsers\IParser.cs" />
     <Compile Include="Parsers\NumberParser.cs" />
     <Compile Include="Program.cs" />

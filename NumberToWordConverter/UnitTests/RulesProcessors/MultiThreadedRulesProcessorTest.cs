@@ -19,7 +19,7 @@ namespace UnitTests.RulesProcessors
             rulesEngineMock.Setup(x => x.ProcessItem(567)).Returns("five-hundred and sixty-seven");
             rulesEngineMock.Setup(x => x.ProcessItem(89)).Returns("eighty-nine");
 
-            MultiThreadedRulesProcessor<long, string> sut = new MultiThreadedRulesProcessor<long, string>();
+            MultiThreadedRulesProcessor<long, string> sut = new MultiThreadedRulesProcessor<long, string>(rulesEngineMock.Object);
 
             IList<long> items = new List<long>()
             {
@@ -28,7 +28,7 @@ namespace UnitTests.RulesProcessors
                 89
             };
 
-            IList<string> results = sut.Process(items, rulesEngineMock.Object);
+            IList<string> results = sut.Process(items);
             Assert.AreEqual(3, results.Count);
             Assert.AreEqual("one-hundred and twenty three", results[0]);
             Assert.AreEqual("five-hundred and sixty-seven", results[1]);

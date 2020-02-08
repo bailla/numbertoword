@@ -7,13 +7,17 @@ namespace NumberToWordConverter.RulesProcessor
 {
     public class MultiThreadedRulesProcessor<Input, Output> : IRulesProcessor<Input, Output>
     {
-        public IList<Output> Process(IList<Input> items, IRulesEngine<Input, Output> rulesEngine)
+        IRulesEngine<Input, Output> _rulesEngine;
+
+        public MultiThreadedRulesProcessor(IRulesEngine<Input, Output> rulesEngine) => _rulesEngine = rulesEngine;
+
+        public IList<Output> Process(IList<Input> items)
         {
             IList<Output> results = new List<Output>();
             IList<Task<Output>> processTasks = new List<Task<Output>>();
 
             foreach (var item in items)
-                processTasks.Add(Task.Run(() => rulesEngine.ProcessItem(item)));
+                processTasks.Add(Task.Run(() => _rulesEngine.ProcessItem(item)));
 
             Task.WaitAll(processTasks.ToArray());
                 

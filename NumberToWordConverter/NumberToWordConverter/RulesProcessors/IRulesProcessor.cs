@@ -5,6 +5,6 @@ namespace NumberToWordConverter.RulesProcessor
 {
     public interface IRulesProcessor<Input, Output>
     {
-        IList<Output> Process(IList<Input> items, IRulesEngine<Input, Output> rulesEngine);
+        IList<Output> Process(IList<Input> items);
     }
 }
