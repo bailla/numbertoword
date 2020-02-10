@@ -21,7 +21,7 @@ namespace NumberToWordConverter.Parsers
 
             foreach (var currentCharacter in input)
             { 
-                if (currentCharacter == ' ')
+                if (currentCharacter == ' ' || currentCharacter == '\r' || currentCharacter == '\n')
                 {
                     spaceBeforeNumber = true;
 

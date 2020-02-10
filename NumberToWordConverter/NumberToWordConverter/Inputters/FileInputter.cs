@@ -6,24 +6,26 @@ namespace NumberToWordConverter.Inputters
 {
     public class FileInputter : IInputter<string>
     {
-        readonly string _fileNamePath;
+        readonly IInputterDialogue<string> _inputterDialogue;
 
-        public FileInputter(string fileNamePath) => _fileNamePath = fileNamePath;
+        public FileInputter(IInputterDialogue<string> inputterDialogue) => _inputterDialogue = inputterDialogue;
 
         public string Get()
         {
+            string filePath = _inputterDialogue.Dialogue();
+
             string text;
 
             try
             {
-                using (StreamReader streamReader = new StreamReader(_fileNamePath))
+                using (StreamReader streamReader = new StreamReader(filePath))
                 {
                     text = streamReader.ReadToEnd();
                 }
             }
             catch(Exception)
             {
-                throw new MissingFileException($"File {_fileNamePath} has not been found");
+                throw new MissingFileException($"File {filePath} has not been found");
             }
 
             return text;

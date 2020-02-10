@@ -1,4 +1,5 @@
-﻿using NumberToWordConverter.Exceptions;
+﻿using Moq;
+using NumberToWordConverter.Exceptions;
 using NumberToWordConverter.Inputters;
 using NUnit.Framework;
 using System;
@@ -13,14 +14,18 @@ namespace UnitTests.Inputters
         [Test]
         public void OpenAndReadFileTest()
         {
-            FileInputter fileInputterSUT = new FileInputter(@".\InputTest1.txt");
+            Mock<IInputterDialogue<string>> inputterDialogue = new Mock<IInputterDialogue<string>>();
+            inputterDialogue.Setup(x => x.Dialogue()).Returns(@".\InputTest1.txt");
+            FileInputter fileInputterSUT = new FileInputter(inputterDialogue.Object);
             Assert.AreEqual("testing 123 testing", fileInputterSUT.Get());
         }
 
         [Test]
         public void MissingFileException()
         {
-            FileInputter fileInputterSUT = new FileInputter(@".\NonExistantFile.txt");
+            Mock<IInputterDialogue<string>> inputterDialogue = new Mock<IInputterDialogue<string>>();
+            inputterDialogue.Setup(x => x.Dialogue()).Returns(@".\NonExistantFile.txt");
+            FileInputter fileInputterSUT = new FileInputter(inputterDialogue.Object);
             Assert.Throws(typeof(MissingFileException), () => fileInputterSUT.Get());
         }
     }
