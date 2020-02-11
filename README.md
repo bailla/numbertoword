@@ -22,7 +22,7 @@ I saw the problem with 5 distinct parts:
 
 	From the output of the parser there is the functionality to process the rules. I created our example AmericanNumberFormatRulesEngine which would be different to a British number format where 1 billion is different. Again I used generics for input and output. We might not neccessarily be processing numbers.
 
-	AmericanNumberFormatRulesEngine uses extention methods to make the logic more readable eg IsMillionsNumber
+	AmericanNumberFormatRulesEngine uses extension methods to make the logic more readable eg IsMillionsNumber
 4. Rules Processing
 
 	Processing rules could have different implementations. I used used Tasks to process the parsed items in a multi-threaded manner. I understand this is overkill and I tend to solve problems in the simplest way and then if there is an issue I would optimise. I wanted to demonstrate use of Tasks.
@@ -34,4 +34,4 @@ I have made it possible to return more than one number. I've made the assumption
 
 I've made use of SOLID principles.
 
-When coding the challenge I've taken a TDD approach which in particular was useful for coding the rules ie AmericanNumberFormatRulesEngine. To tackle this i startedwith small numbers and made my way up. My unit test code is checked in.
+When coding the challenge I've taken a TDD approach which in particular was useful for coding the rules ie AmericanNumberFormatRulesEngine. To tackle this i started with small numbers and made my way up. My unit test code is checked in.
